@@ -1,0 +1,15 @@
+{
+  "name": "node-lab-04-memory-leaks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "seed": "node scripts/gen-bigfile.js",
+    "start": "node --expose-gc server/server.js",
+    "start:inspect": "node --inspect --expose-gc server/server.js",
+    "check:leaks": "node scripts/leak-check.js",
+    "check:stream": "node scripts/stream-check.js",
+    "check": "npm run check:leaks && npm run check:stream"
+  }
+}
