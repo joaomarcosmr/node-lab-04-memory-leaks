@@ -7,7 +7,7 @@ const PRODUCTS = 50_000;
 async function main() {
   const sample = await prisma.product.findFirst();
   if ((await prisma.product.count()) >= PRODUCTS && sample && sample.description.length > 2000) { console.log('products already seeded'); return; }
-  await prisma.product.deleteMany();
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE products RESTART IDENTITY'); // ids always start at 1
   const adjectives = ['wireless', 'ergonomic', 'vintage', 'compact', 'premium', 'rugged', 'smart', 'portable', 'classic', 'ultra'];
   const nouns = ['headphones', 'keyboard', 'backpack', 'lamp', 'speaker', 'monitor', 'charger', 'notebook', 'camera', 'bottle'];
   let seed = 11;
