@@ -2,14 +2,36 @@
   "name": "node-lab-04-memory-leaks",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "engines": { "node": ">=20" },
   "scripts": {
-    "seed": "node scripts/gen-bigfile.js",
-    "start": "node --expose-gc server/server.js",
-    "start:inspect": "node --inspect --expose-gc server/server.js",
-    "check:leaks": "node scripts/leak-check.js",
-    "check:stream": "node scripts/stream-check.js",
+    "postinstall": "prisma generate",
+    "build": "nest build",
+    "start": "nest build && node --expose-gc dist/main",
+    "start:inspect": "nest build && node --inspect --expose-gc dist/main",
+    "start:dev": "nest start --watch --exec \"node --expose-gc\"",
+    "db:up": "docker compose up -d",
+    "db:setup": "prisma migrate deploy && prisma db seed && node scripts/gen-bigfile.mjs",
+    "check:leaks": "node scripts/leak-check.mjs",
+    "check:stream": "node scripts/stream-check.mjs",
     "check": "npm run check:leaks && npm run check:stream"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.2.8",
+    "@nestjs/core": "^11.2.8",
+    "@nestjs/platform-express": "^11.2.8",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.24",
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.15.5",
+    "prisma": "^7.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }
